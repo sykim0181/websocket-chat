@@ -1,0 +1,29 @@
+# backend
+# Node.js
+backend/node_modules/
+
+# Logs
+backend/logs
+backend/*.log
+backend/npm-debug.log*
+
+# Dependency directories
+backend/pids
+backend/logs
+backend/*.pid
+backend/*.seed
+backend/*.pid.lock
+
+# Optional npm cache directory
+backend/.npm
+
+# Optional eslint cache
+backend/.eslintcache
+
+# Optional REPL history
+backend/.node_repl_history
+
+# Environment variables
+backend/.env*
+
+# frontend
