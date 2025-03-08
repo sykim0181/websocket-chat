@@ -1,11 +1,38 @@
 import express from "express";
 import http from "http";
 import WebSocket from "ws";
+import cors from "cors";
+import { v4 as uuid4 } from "uuid";
 
 const app = express();
 
+app.use(express.json());
+app.use(cors());
+
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
+
+const rooms = new Map();
+
+app.get('/api/rooms', (req, res) => {
+  res.json(Array.from(rooms.values()));
+});
+
+app.post('/api/create-room', (req, res) => {
+  const { roomName } = req.body;
+
+  const id = uuid4();
+  const room = {
+    id,
+    name: roomName
+  };
+
+  if (!rooms.has(roomName)) {
+    rooms.set(id, room);
+  }
+
+  res.json({ room });
+});
 
 wss.on("connection", (ws) => {
   console.log("connected");
