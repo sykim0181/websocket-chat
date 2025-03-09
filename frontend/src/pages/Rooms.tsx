@@ -1,8 +1,9 @@
 import { Box, Button, InputLabel, Modal, Snackbar, SxProps, TextField, Theme } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router";
+
 import RoomManager from "../libs/RoomManager";
-import { useNavigate } from "react-router";
 
 const modalBoxStyle: SxProps<Theme> = {
   position: 'absolute',
@@ -21,7 +22,10 @@ const Rooms = () => {
 
   const { data } = useQuery({
     queryKey: ['all-rooms'], 
-    queryFn: () => RoomManager.getRooms(),
+    queryFn: async () => {
+      const rooms = await RoomManager.getRooms()
+      return rooms;
+    },
     staleTime: 1000 * 60,
   });
 
@@ -44,7 +48,9 @@ const Rooms = () => {
     return (
       <ul>
         {data.map((room, idx) => (
-          <li key={`room-${idx}`}>{room.name}</li>
+          <li key={`room-${idx}`}>
+            <Link to={`/room/${room.id}`}>{room.name}</Link>
+          </li>
         ))}
       </ul>
     );
@@ -77,12 +83,12 @@ const CreateRoomModal = () => {
   const queryClient = useQueryClient();
   const { mutate, error } = useMutation({
     mutationFn: async (roomName: string) => {
-      const room = await RoomManager.createRoom(roomName);
-      return room;
+      const roomId = await RoomManager.createRoom(roomName);
+      return roomId;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['all-rooms'] });
-      navigate(`/room/${data.id}`);
+      navigate(`/room/${data}`);
     }
   });
 

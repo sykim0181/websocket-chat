@@ -26,6 +26,8 @@ backend/.node_repl_history
 # Environment variables
 backend/.env*
 
+backend/ChatRooms
+
 # frontend
 # Logs
 frontend/logs
