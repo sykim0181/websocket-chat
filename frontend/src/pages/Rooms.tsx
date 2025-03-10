@@ -1,7 +1,7 @@
-import { Box, Button, InputLabel, Modal, Snackbar, SxProps, TextField, Theme } from "@mui/material";
+import { Box, Button, InputLabel, List, ListItem, ListItemButton, ListItemText, Modal, Snackbar, SxProps, TextField, Theme } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 import RoomManager from "../libs/RoomManager";
 
@@ -46,21 +46,33 @@ const Rooms = () => {
     }
 
     return (
-      <ul>
+      <List>
         {data.map((room, idx) => (
-          <li key={`room-${idx}`}>
-            <Link to={`/room/${room.id}`}>{room.name}</Link>
-          </li>
+          <ListItem key={`room-${idx}`}>
+            <ListItemButton href={`/room/${room.id}`}>
+              <ListItemText>{room.name}</ListItemText>
+            </ListItemButton>
+          </ListItem>
         ))}
-      </ul>
+      </List>
     );
   }
 
   return (
     <main>
-      <h1>현재 방 목록</h1>
+      <h1 style={{
+        textAlign: "center"
+      }}>현재 방 목록</h1>
 
-      <Button onClick={handleOpen}>새로 만들기</Button>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'flex-end'
+      }}>
+        <Button 
+          onClick={handleOpen} 
+          variant="contained"
+        >새로 만들기</Button>
+      </div>
 
       <Modal open={open} onClose={handleClose}>
         <CreateRoomModal />
@@ -135,7 +147,10 @@ const CreateRoomModal = () => {
           error={isRoomNameError}
           helperText={roomNameHelperText}
         />
-        <Button type="submit">생성하기</Button>
+
+        <Button type="submit" style={{
+          marginTop: '1rem'
+        }}>생성하기</Button>
       </Box>
 
       <Snackbar open={error !== null} message="방 생성 실패" />

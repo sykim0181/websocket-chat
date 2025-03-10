@@ -32,13 +32,26 @@ const Home = () => {
 
   return (
     <main>
-      <Box component="form" onSubmit={onSubmit}>
+      <Box 
+        component="form" 
+        onSubmit={onSubmit} 
+        sx={{
+          display: "flex", 
+          flexDirection: "column" 
+        }}
+      >
         <InputLabel htmlFor="user-name">닉네임</InputLabel>
         <TextField 
           id="user-name" 
           inputRef={usernameRef}
         />
-        <Button type="submit">시작하기</Button>
+        <Button 
+          type="submit" 
+          variant="contained"
+          style={{
+            marginTop: "1rem"
+          }}
+        >채팅 시작하기</Button>
       </Box>
 
       <Snackbar open={errorMsg !== null} message={errorMsg} autoHideDuration={5000} />
